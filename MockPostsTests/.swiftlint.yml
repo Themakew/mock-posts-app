@@ -1,0 +1,61 @@
+opt_in_rules:
+    - xct_specific_matcher
+
+disabled_rules:
+    - sorted_imports
+    - implicitly_unwrapped_optional
+    - type_name
+    - force_unwrapping
+    - weak_delegate
+    - identifier_name
+    - line_length
+    - convenience_type
+    - overridden_super_call
+    - unavailable_function
+
+xct_specific_matcher:
+    severity: error
+
+custom_rules:
+    super_setup_tests:
+        name: "Style Guide: super.setUp() must be called"
+        included: ".*\\.swift"
+        regex: 'override( class)? func setUp\(\) \{[\s]((?!super\.setUp).)*\n'
+        message: "You must call super.setUp() to guarantee compatibility with future implementations provided by Apple."
+        severity: error
+    super_setup_with_error:
+        name: "Style Guide: super.setUpWithError() must be called"
+        included: ".*\\.swift"
+        regex: '(\boverride func setUpWithError\(\)\b)((?!\btry super\.setUpWithError\b)[\s\S])+?(\})'
+        message: "You must call super.setUpWithError() to guarantee compatibility with future implementations provided by Apple."
+        severity: error
+    super_tear_down:
+        name: "Style Guide: super.tearDown()"
+        included: ".*\\.swift"
+        regex: '(\boverride func tearDown\(\)\b)((?!\bsuper\.tearDown()\b)[\s\S])+?(\})'
+        message: "You must call super.tearDown() to guarantee compatibility with future implementations provided by Apple."
+        severity: error
+    xctassert:
+        name: "Style Guide: XCTAssert(<expression>)"
+        included: ".*\\.swift"
+        regex: '(XCTAssert\()'
+        message: "Don't use XCTAssert(<expression>), choose an specialization for the assertion, like XCTAssertTrue, XCTAssertEqual(<expr>, <expr>)"
+        severity: error
+    throws_without_try:
+        name: "The method handles throws but there is no try"
+        included: ".*\\.swift"
+        regex: '(throws \{)((?!try)[\s\S]){0,4}(\})'
+        message: "Don't handle throws if there is no try in your context"
+        severity: error
+    force_func_test:
+        name: "Single responsibility test file"
+        included: ".*\\TestCase.swift"
+        regex: '^[\s]{4}func ((?!test))[A-Za-z0-9].*?\{\s'
+        message: "Every method that is not overridden must be in a test double separate file or must be a testCase"
+        severity: error
+    prohibited_current_date:
+        name: "Don't use Date() in the test target"
+        included: ".*\\.swift"
+        regex: ' Date\(\)'
+        message: "Don't use Date() in tests. Use a fixes immutable date to guarantee tests won't break over time"
+        severity: error

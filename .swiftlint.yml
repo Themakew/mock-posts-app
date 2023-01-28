@@ -1,0 +1,184 @@
+reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit)
+
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+    - DerivedData
+    - Pods
+
+# If you need help with rules run $ swiftlint
+
+opt_in_rules:
+    - closure_end_indentation
+    - closure_spacing
+    - comments_space
+    - empty_count
+    - explicit_init
+    - explicit_failure_calls
+    - extension_access_modifier
+    - fatal_error_message
+    - first_where
+    - force_cast
+    - force_unwrapping
+    - implicitly_unwrapped_optional
+    - missing_docs
+    - multiline_parameters
+    - multiple_empty_lines
+    - nesting
+    - number_separator
+    - operator_usage_whitespace
+    - overridden_super_call
+    - private_outlet
+    - prohibited_super_call
+    - protocol_property_accessors_order
+    - redundant_nil_coalescing
+    - sorted_imports
+    - syntactic_sugar
+    - vertical_parameter_alignment_on_call
+    - vertical_whitespace
+    - closing_brace
+    - array_init
+    - conditional_returns_on_newline
+    - empty_string
+    - lower_acl_than_parent
+    - mark
+    - sorted_first_last
+    - yoda_condition
+    - legacy_multiple
+    - anyobject_protocol
+    - collection_alignment
+    - contains_over_filter_count
+    - contains_over_filter_is_empty
+    - contains_over_first_not_nil
+    - contains_over_range_nil_comparison
+    - empty_collection_literal
+    - empty_xctest_method
+    - for_where
+    - flatmap_over_map_reduce
+    - identical_operands
+    - last_where
+    - legacy_random
+    - literal_expression_end_indentation
+    - multiline_function_chains
+    - multiline_literal_brackets
+    - pattern_matching_keywords
+    - reduce_boolean
+    - reduce_into
+    - redundant_type_annotation
+    - single_test_class
+    - switch_case_on_newline
+    - toggle_bool
+    - unavailable_function
+    - unneeded_parentheses_in_closure_argument
+    - unowned_variable_capture
+
+disabled_rules: # rule identifiers to exclude from running
+    - missing_docs
+
+cyclomatic_complexity:
+    ignores_case_statements: true
+    warning: 10
+    error: 10
+
+function_body_length:
+    warning: 100
+    error: 100
+
+file_length:
+    warning: 420
+    error: 420
+
+line_length:
+    warning: 180
+    error: 180
+
+nesting:
+    type_level:
+        warning: 3
+        error: 3
+    statement_level:
+        warning: 5
+        error: 5
+
+identifier_name:
+    allowed_symbols: "_"
+    min_length: 2
+    max_length:
+        warning: 30
+        error: 30
+
+large_tuple:
+    warning: 3
+    error: 3
+
+type_body_length:
+    warning: 350
+    error: 350
+
+trailing_comma:
+    mandatory_comma: true
+
+number_separator:
+    minimum_length: 8
+
+private_outlet:
+    allow_private_set: true
+
+colon:
+    severity: error
+
+comma: error
+empty_count: error
+legacy_constant: error
+trailing_newline: error
+trailing_semicolon: error
+
+custom_rules:
+    comments_space: # From https://github.com/brandenr/swiftlintconfig
+        name: "Style Guide: Space After Comment"
+        regex: '(^ *//\w+)'
+        message: "There should be a space after //"
+        severity: warning
+    explicit_failure_calls:
+        name: “Avoid asserting ‘false’”
+        regex: ‘((assert|precondition)\(false)’
+        message: “Use assertionFailure() or preconditionFailure() instead.”
+        severity: warning
+    multiple_empty_lines:
+        name: "Style Guide: Multiple Empty Lines"
+        regex: '((?:\s*\n){3,})'
+        message: "There are too many line breaks"
+        severity: error
+    explicit_empty_line_between_methods:
+        name: "Style Guide: No empty line between methods"
+        included: ".*\\.swift"
+        regex: '(^|\s{4})[}](\n|$)(^|\s{4})(?![ ])[a-zA-Z:@()\->., \[\]\?\!]{1,}([{]|$)'
+        message: "There should have exactly 1 empty line between methods to avoid agglutination"
+        severity: error
+    invalid_mark_format:
+        name: "Style Guide: Invalid MARK Format"
+        regex: '(?m-s)(\/\/[\s]*(?i)(MARK)(?!(\:[\s]{1}\-[\s]{1}){1}))'
+        message: "Use format: MARK: - Your Info"
+        severity: error
+    vertical_whitespaces_around_mark:
+        included: ".*.swift"
+        name: "Style Guide: Vertical Whitespaces Around MARK:"
+        regex: '\/\/\s*MARK:[^\n]*(\n)(?!\n)|(\n\n\n)[ \t]*\/\/\s*MARK:|[^\s{]\n[^\n\/]*\/\/\s*MARK:'
+        message: "Include a single vertical whitespace (empty line) before and after MARK: comments."
+        severity: error
+    no_print:
+        included: ".*\\.swift"
+        name: "Style Guide: Forbidden print"
+        regex: "print[(]"
+        message: "There should be no prints in the code"
+        severity: error
+    no_let_underscore:
+        included: ".*\\.swift"
+        name: "Style Guide: No let _ = ..."
+        regex: 'let[ ][_][ ][=]'
+        message: "Don't use let _ = xxx , use xxx != nil"
+        severity: error
+    no_explict_timezone:
+        included: ".*\\.swift"
+        name: "Forbiden explict timezones"
+        regex: "\"UTC\"|\"GMT\""
+        message: "There should be no explicit timezones in the code, UTC is already the default value for the project's Date extension"
+        severity: warning
