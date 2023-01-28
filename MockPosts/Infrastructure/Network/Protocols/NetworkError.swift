@@ -8,19 +8,23 @@
 import Foundation
 
 enum NetworkError: Error {
-    /// The API returns statucCode 200 for every response type, success or error,
-    /// because of that, the error will be mapped always as a generic one.
-    case genericError(description: String?)
-    case decodeError(description: String)
+    case urlError
+    case decodeError
+    case noAPIResponse
+    case httpResponseError(statusCode: Int)
 }
 
 extension NetworkError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case let .genericError(description):
-            return description
-        case let .decodeError(description):
-            return description
+        case .urlError:
+            return "API Error: Invalid URL"
+        case .decodeError:
+            return "API Error: Decoding Error"
+        case .noAPIResponse:
+            return "API Error: No API Response"
+        case let .httpResponseError(statusCode):
+            return "API Error: HTTP Code \(statusCode)"
         }
     }
 }

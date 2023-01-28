@@ -1,7 +1,5 @@
 PODS:
   - Alamofire (5.4.4)
-  - AlamofireNetworkActivityLogger (3.4.0):
-    - Alamofire (~> 5.4.0)
   - RxAlamofire (6.1.1):
     - RxAlamofire/Core (= 6.1.1)
   - RxAlamofire/Core (6.1.1):
@@ -22,7 +20,6 @@ PODS:
   - XCoordinator/Core (2.2.0)
 
 DEPENDENCIES:
-  - AlamofireNetworkActivityLogger (~> 3.4)
   - RxAlamofire
   - RxBlocking (= 6.5.0)
   - RxCocoa (= 6.5.0)
@@ -33,7 +30,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
-    - AlamofireNetworkActivityLogger
     - RxAlamofire
     - RxBlocking
     - RxCocoa
@@ -44,7 +40,6 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
-  AlamofireNetworkActivityLogger: 162ab8aee00e6267a4304d7cc134e13ccfe3bcc5
   RxAlamofire: beb75a1c452d0de225651db4903f5d29d034a620
   RxBlocking: 04b5fd28bb5ea49f7d64b80db8bbfe50d9cc1c7d
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
@@ -53,6 +48,6 @@ SPEC CHECKSUMS:
   RxTest: eb2d23adefc5a5ebf5779c7792fa3edfe6ebcc17
   XCoordinator: a5f91e43ee944f508529763921165697d3211629
 
-PODFILE CHECKSUM: ff27c3af678d7d935c710db3d591eac723e6c80e
+PODFILE CHECKSUM: 4cbc2495f5dcaa1ceb88a5f5cb97a468c6689eda
 
 COCOAPODS: 1.11.3

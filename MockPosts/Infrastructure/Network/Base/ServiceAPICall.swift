@@ -14,6 +14,12 @@ protocol ServiceAPICallProtocol {
     func request<T: Decodable>(request: APIRequest, type: T.Type, parameters: Parameters?) -> Observable<Result<T, NetworkError>>
 }
 
+extension ServiceAPICallProtocol {
+    func request<T: Decodable>(request: APIRequest, type: T.Type, parameters: Parameters? = nil) -> Observable<Result<T, NetworkError>> {
+        self.request(request: request, type: type, parameters: parameters)
+    }
+}
+
 final class ServiceAPICall: ServiceAPICallProtocol {
 
     // MARK: - Private Methods
@@ -32,30 +38,35 @@ final class ServiceAPICall: ServiceAPICallProtocol {
         return session.rx.request(request.method, request.url, parameters: parameters)
             .responseData()
             .flatMapLatest { response, data -> Observable<Result<T, NetworkError>> in
-                let decoder = JSONDecoder()
-
                 do {
                     return Observable<Result<T, NetworkError>>.create { observer in
-                        let errorMessage = try? decoder.decode(ErrorResponse.self, from: data).error
+                        debugPrint("\n####################################################\n")
+                        debugPrint(" 🌐 URL: \(response.url?.description ?? "-")")
+                        debugPrint(" 📣 STATUS CODE: \(response.statusCode)")
+                        debugPrint(" 🚀 METHOD: \(request.method.rawValue)")
 
-                        if (errorMessage ?? "").isEmpty {
-                            do {
-                                let object = try decoder.decode(T.self, from: data)
-                                debugPrint("Response: \(object)")
-                                observer.onNext(.success(object))
-                            } catch {
-                                observer.onNext(
-                                    .failure(
-                                        NetworkError.decodeError(
-                                            description: "Decoding the reponse to the object \(T.self) failed."
-                                        )
-                                    )
-                                )
-                            }
-                        } else {
-                            observer.onNext(
-                                .failure(NetworkError.genericError(description: errorMessage))
-                            )
+                        guard (200..<400).contains(response.statusCode) else {
+                            let error = NetworkError.httpResponseError(statusCode: response.statusCode)
+                            debugPrint(" ❌ Finished With Error: \(error.localizedDescription)")
+                            debugPrint(error.localizedDescription)
+
+                            observer.onNext(.failure(error))
+                            observer.onCompleted()
+                            return Disposables.create()
+                        }
+
+                        do {
+                            let decodedObject = try JSONDecoder().decode(type.self, from: data)
+                            debugPrint(" ✅ Finished With Success")
+                            debugPrint(" ✅ JSON OBJECT: \(decodedObject)")
+
+                            observer.onNext(.success(decodedObject))
+                        } catch {
+                            let error = NetworkError.decodeError
+                            debugPrint(" ❌ Finished With Error:")
+                            debugPrint(error.localizedDescription)
+
+                            observer.onNext(.failure(error))
                         }
 
                         observer.onCompleted()

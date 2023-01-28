@@ -5,8 +5,8 @@
 //  Created by Ruyther Costa on 28/01/23.
 //
 
-import XCoordinator
 import UIKit
+import XCoordinator
 
 enum HomeRouter: Route {
     case home
@@ -26,7 +26,11 @@ final class HomeCoordinator: NavigationCoordinator<HomeRouter> {
     override func prepareTransition(for route: HomeRouter) -> NavigationTransition {
         switch route {
         case .home:
-            let viewModel = HomeViewModel()
+            let service = ServiceAPICall()
+            let postService = PostAPIService(serviceAPI: service)
+            let postRepository = PostRepository(postAPIService: postService)
+            let postUseCase = PostUseCase(postRepository: postRepository)
+            let viewModel = HomeViewModel(router: weakRouter, postUseCase: postUseCase)
             let viewController = HomeViewController(viewModel: viewModel)
             return .push(viewController)
         case .dismiss:
