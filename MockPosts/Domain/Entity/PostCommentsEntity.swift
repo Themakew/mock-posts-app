@@ -1,11 +1,11 @@
 //
-//  PostCommentsResponse.swift
+//  PostCommentsEntity.swift
 //  MockPosts
 //
-//  Created by Ruyther Costa on 28/01/23.
+//  Created by Ruyther Costa on 30/01/23.
 //
 
-struct PostCommentsResponse: Decodable, Equatable {
+struct PostCommentsEntity: Equatable {
     let userId: Int
     let id: Int
     let name: String

@@ -13,4 +13,8 @@ extension ObservableType {
             try scope.map { try selector($0, value).asObservable() } ?? .empty()
         }
     }
+
+    func filterNotNil<T>() -> Observable<T> where Element == T? {
+        return self.filter { $0 != nil }.flatMap { Observable.from(optional: $0) }
+    }
 }

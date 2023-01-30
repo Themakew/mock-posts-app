@@ -12,6 +12,7 @@ enum NetworkError: Error {
     case decodeError
     case noAPIResponse
     case httpResponseError(statusCode: Int)
+    case genericError(error: String)
 }
 
 extension NetworkError: LocalizedError {
@@ -25,6 +26,8 @@ extension NetworkError: LocalizedError {
             return "API Error: No API Response"
         case let .httpResponseError(statusCode):
             return "API Error: HTTP Code \(statusCode)"
+        case let .genericError(error):
+            return error
         }
     }
 }

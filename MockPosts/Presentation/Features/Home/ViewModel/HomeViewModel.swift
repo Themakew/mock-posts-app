@@ -21,7 +21,7 @@ protocol HomeViewModelInput {
 }
 
 protocol HomeViewModelOutput {
-
+    var dataSource: BehaviorRelay<[PostEntity]?> { get }
 }
 
 extension HomeViewModelProtocol where Self: HomeViewModelInput & HomeViewModelOutput {
@@ -34,6 +34,7 @@ final class HomeViewModel: HomeViewModelProtocol, HomeViewModelInput, HomeViewMo
     // MARK: - Internal Properties
 
     var getPosts = PublishRelay<Void>()
+    var dataSource = BehaviorRelay<[PostEntity]?>(value: [])
 
     // MARK: - Private Properties
 
@@ -57,7 +58,7 @@ final class HomeViewModel: HomeViewModelProtocol, HomeViewModelInput, HomeViewMo
 
     private func bindRx() {
         let responseResultObservable = getPosts
-            .flatMap(weak: self) { this, _ -> Observable<Result<[PostResponse], NetworkError>> in
+            .flatMap(weak: self) { this, _ -> Observable<Result<[PostEntity], NetworkError>> in
                 return this.postUseCase.getPosts()
                     .asObservable()
             }
@@ -65,14 +66,13 @@ final class HomeViewModel: HomeViewModelProtocol, HomeViewModelInput, HomeViewMo
 
         responseResultObservable
             .withUnretained(self)
-            .subscribe(onNext: { _, result in
+            .subscribe(onNext: { this, result in
                 switch result {
                 case let .success(response):
+                    this.dataSource.accept(response)
                     break
-//                    debugPrint(response)
                 case let .failure(error):
                     break
-//                    debugPrint(error)
                 }
             })
             .disposed(by: disposeBag)

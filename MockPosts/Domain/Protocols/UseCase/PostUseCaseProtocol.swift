@@ -8,7 +8,7 @@
 import RxSwift
 
 protocol PostUseCaseProtocol {
-    func getPosts() -> Single<Result<[PostResponse], NetworkError>>
-    func getPostDetail(postId: String) -> Single<Result<PostResponse, NetworkError>>
-    func getPostDetailComments(postId: String) -> Single<Result<[PostCommentsResponse], NetworkError>>
+    func getPosts() -> Single<Result<[PostEntity], NetworkError>>
+    func getPostDetail(postId: String) -> Single<Result<PostEntity, NetworkError>>
+    func getPostDetailComments(postId: String) -> Single<Result<[PostCommentsEntity], NetworkError>>
 }

@@ -21,15 +21,15 @@ final class PostUseCase: PostUseCaseProtocol {
 
     // MARK: - Internal Methods
 
-    func getPosts() -> Single<Result<[PostResponse], NetworkError>> {
+    func getPosts() -> Single<Result<[PostEntity], NetworkError>> {
         return postRepository.getPosts()
     }
 
-    func getPostDetail(postId: String) -> Single<Result<PostResponse, NetworkError>> {
+    func getPostDetail(postId: String) -> Single<Result<PostEntity, NetworkError>> {
         return postRepository.getPostDetail(postId: postId)
     }
 
-    func getPostDetailComments(postId: String) -> Single<Result<[PostCommentsResponse], NetworkError>> {
+    func getPostDetailComments(postId: String) -> Single<Result<[PostCommentsEntity], NetworkError>> {
         return postRepository.getPostDetailComments(postId: postId)
     }
 }
