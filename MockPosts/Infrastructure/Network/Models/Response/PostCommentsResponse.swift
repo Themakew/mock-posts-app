@@ -6,7 +6,7 @@
 //
 
 struct PostCommentsResponse: Decodable, Equatable {
-    let userId: Int
+    let postId: Int
     let id: Int
     let name: String
     let email: String

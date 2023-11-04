@@ -40,7 +40,8 @@ final class ServiceAPICall: ServiceAPICallProtocol {
             .flatMapLatest { response, data -> Observable<Result<T, NetworkError>> in
                 do {
                     return Observable<Result<T, NetworkError>>.create { observer in
-                        debugPrint("\n####################################################\n")
+                        debugPrint()
+                        debugPrint("####################################################")
                         debugPrint(" 🌐 URL: \(response.url?.description ?? "-")")
                         debugPrint(" 📣 STATUS CODE: \(response.statusCode)")
                         debugPrint(" 🚀 METHOD: \(request.method.rawValue)")
@@ -59,12 +60,15 @@ final class ServiceAPICall: ServiceAPICallProtocol {
                             let decodedObject = try JSONDecoder().decode(type.self, from: data)
                             debugPrint(" ✅ Finished With Success")
                             debugPrint(" ✅ JSON OBJECT: \(decodedObject)")
+                            debugPrint()
 
                             observer.onNext(.success(decodedObject))
-                        } catch {
+                        } catch let errorDescription {
                             let error = NetworkError.decodeError
                             debugPrint(" ❌ Finished With Error:")
-                            debugPrint(error.localizedDescription)
+                            debugPrint("\(error.localizedDescription):")
+                            debugPrint(errorDescription)
+                            debugPrint()
 
                             observer.onNext(.failure(error))
                         }

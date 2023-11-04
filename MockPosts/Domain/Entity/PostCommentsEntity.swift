@@ -6,9 +6,9 @@
 //
 
 struct PostCommentsEntity: Equatable {
-    let userId: Int
+    let postId: Int
     let id: Int
     let name: String
     let email: String
-    let body: String
+    let comment: String
 }

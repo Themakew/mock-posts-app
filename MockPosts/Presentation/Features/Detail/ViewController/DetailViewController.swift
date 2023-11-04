@@ -36,9 +36,15 @@ final class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        customView.tableView.register(cellClass: CommentCell.self)
         bindRx()
 
         viewModel.input.getPostDetail.accept(())
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.largeTitleDisplayMode = .never
     }
 }
 
@@ -46,11 +52,16 @@ final class DetailViewController: UIViewController {
 
 extension DetailViewController {
     private func bindRx() {
+        customView.tableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+
         viewModel.output.title
             .drive(rx.title)
             .disposed(by: disposeBag)
 
         viewModel.output.postTitle
+            .debug()
             .drive(customView.titleLabel.rx.text)
             .disposed(by: disposeBag)
 
@@ -69,5 +80,32 @@ extension DetailViewController {
                 }
             }
             .disposed(by: disposeBag)
+
+        viewModel.output.commentsDataSource
+            .filterNotNil()
+            .do(onNext: { [weak self] comments in
+                self?.customView.setupFixedTitle(with: comments.count)
+            })
+            .bind(to: customView.tableView.rx.items) { [weak self] _, row, dataSource in
+                let indexPath = IndexPath(row: row, section: 0)
+
+                guard let self else {
+                    return UITableViewCell()
+                }
+
+                let cell = self.customView.tableView.dequeue(cellClass: CommentCell.self, indexPath: indexPath)
+                cell.configure(content: dataSource)
+
+                return cell
+            }
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - UITableViewDelegate Extension
+
+extension DetailViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }

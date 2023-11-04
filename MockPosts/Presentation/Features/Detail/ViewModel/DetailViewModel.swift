@@ -25,6 +25,7 @@ protocol DetailViewModelOutput {
     var isLoading: BehaviorRelay<Bool> { get }
     var postTitle: Driver<String> { get }
     var postBody: Driver<String> { get }
+    var commentsDataSource: BehaviorRelay<[PostCommentsEntity]?> { get }
 }
 
 extension DetailViewModelProtocol where Self: DetailViewModelInput & DetailViewModelOutput {
@@ -39,6 +40,7 @@ final class DetailViewModel: DetailViewModelProtocol, DetailViewModelInput, Deta
     var getPostDetail = PublishRelay<Void>()
     var isLoading = BehaviorRelay<Bool>(value: false)
     var title: Driver<String> = .just("Post Detail")
+    var commentsDataSource = BehaviorRelay<[PostCommentsEntity]?>(value: nil)
 
     var postTitle: Driver<String> {
         return postTitleSubject.asDriver(onErrorJustReturn: "")
@@ -74,30 +76,53 @@ final class DetailViewModel: DetailViewModelProtocol, DetailViewModelInput, Deta
     // MARK: - Private Methods
 
     private func bindRx() {
-        let responseResultObservable = getPostDetail
+        getPostDetail
             .do(onNext: { [weak self] _ in
                 self?.isLoading.accept(true)
             })
-            .flatMap(weak: self) { this, _ -> Observable<Result<PostEntity, NetworkError>> in
-                return this.postUseCase.getPostDetail(postId: String(this.postId))
-                    .asObservable()
+            .flatMapLatest { _ -> Observable<(PostEntity?, [PostCommentsEntity]?, NetworkError?)> in
+                return Observable.zip(
+                    self.fetchPostDetail(),
+                    self.fetchComments(),
+                    resultSelector: { postDetailResult, commentsResult -> (PostEntity?, [PostCommentsEntity]?, NetworkError?) in
+                        switch (postDetailResult, commentsResult) {
+                        case let (.success(postDetail), .success(comments)):
+                            return (postDetail, comments, nil)
+                        case let (.failure(error), _), let (_, .failure(error)):
+                            return (nil, nil, error)
+                        default:
+                            return (nil, nil, nil)
+                        }
+                    }
+                )
             }
             .do(onNext: { [weak self] _ in
                 self?.isLoading.accept(false)
             })
-            .share()
+            .subscribe(onNext: { [weak self] postDetail, comments, error in
+                if let error {
+                    // TODO: Handle error
+                    debugPrint(error)
+                    return
+                }
 
-        responseResultObservable
-            .withUnretained(self)
-            .subscribe(onNext: { this, result in
-                switch result {
-                case let .success(response):
-                    this.postTitleSubject.onNext(response.title)
-                    this.postBodySubject.onNext(response.body)
-                case let .failure(error):
-                    break
+                if let postDetail {
+                    self?.postTitleSubject.onNext(postDetail.title)
+                    self?.postBodySubject.onNext(postDetail.body)
+                }
+
+                if let comments {
+                    self?.commentsDataSource.accept(comments)
                 }
             })
             .disposed(by: disposeBag)
+    }
+
+    private func fetchPostDetail() -> Observable<Result<PostEntity, NetworkError>> {
+        return postUseCase.getPostDetail(postId: postId).asObservable()
+    }
+
+    private func fetchComments() -> Observable<Result<[PostCommentsEntity], NetworkError>> {
+        return postUseCase.getPostDetailComments(postId: postId).asObservable()
     }
 }

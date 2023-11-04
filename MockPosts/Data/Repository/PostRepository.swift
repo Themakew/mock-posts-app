@@ -39,7 +39,6 @@ final class PostRepository: PostRepositoryProtocol {
 
     func getPostDetail(postId: String) -> Single<Result<PostEntity, NetworkError>> {
         return postAPIService.getPostDetail(postId: postId)
-            .delay(.seconds(5), scheduler: MainScheduler.instance)
             .map { [weak self] result in
                 guard let self else {
                     return .failure(NetworkError.genericError(error: "PostResponse map to PostEntity failed."))
@@ -94,7 +93,7 @@ final class PostRepository: PostRepositoryProtocol {
     private func getPostCommentsEntityList(list: [PostCommentsResponse]) -> [PostCommentsEntity] {
         let auxiliarList = list
         return auxiliarList.map { item in
-            PostCommentsEntity(userId: item.userId, id: item.id, name: item.name, email: item.email, body: item.body)
+            PostCommentsEntity(postId: item.postId, id: item.id, name: item.name, email: item.email, comment: item.body)
         }
     }
 }

@@ -29,6 +29,25 @@ final class DetailView: UIView {
         $0.numberOfLines = 0
     }
 
+    let tableViewTitleLabel = UILabel(translateMask: false).apply {
+        $0.font = UIFont.preferredFont(forTextStyle: .headline)
+        $0.textAlignment = .center
+    }
+
+    let tableView = UITableView(translateMask: false).apply {
+        $0.rowHeight = UITableView.automaticDimension
+        $0.estimatedRowHeight = 50
+    }
+
+    // MARK: - Private Properties
+
+    private let stackView = UIStackView(translateMask: false).apply {
+        $0.spacing = 4
+        $0.axis = .vertical
+        $0.alignment = .fill
+        $0.distribution = .fill
+    }
+
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
@@ -40,27 +59,43 @@ final class DetailView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Internal Methods
+
+    func setupFixedTitle(with numberOfComments: Int) {
+        let titleText = "Comments (\(numberOfComments))"
+        tableViewTitleLabel.text = titleText
+    }
 }
 
 // MARK: - ViewCode Extension
 
 extension DetailView: ViewCode {
     func buildViewHierarchy() {
-        addSubview(titleLabel)
-        addSubview(descriptionLabel)
+        addSubview(stackView)
+        addSubview(tableView)
+        addSubview(tableViewTitleLabel)
         addSubview(activityIndicator)
+
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(descriptionLabel)
     }
 
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor),
 
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor),
+            tableViewTitleLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 24),
+            tableViewTitleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            tableViewTitleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+
+            tableView.topAnchor.constraint(equalTo: tableViewTitleLabel.bottomAnchor, constant: 8),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),

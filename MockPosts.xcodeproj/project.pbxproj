@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5608C54F2AF6091700750FCE /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5608C54E2AF6091700750FCE /* CommentHeaderView.swift */; };
+		5608C5512AF60C3B00750FCE /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5608C5502AF60C3B00750FCE /* CommentCell.swift */; };
 		561B30DD2983FC24005A71B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561B30DC2983FC24005A71B2 /* AppDelegate.swift */; };
 		561B30E72983FC24005A71B2 /* MockPosts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 561B30E52983FC24005A71B2 /* MockPosts.xcdatamodeld */; };
 		561B30E92983FC25005A71B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 561B30E82983FC25005A71B2 /* Assets.xcassets */; };
@@ -64,6 +66,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5608C54C2AF5FA8C00750FCE /* MockPosts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MockPosts.entitlements; sourceTree = "<group>"; };
+		5608C54E2AF6091700750FCE /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
+		5608C5502AF60C3B00750FCE /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		561B30D92983FC24005A71B2 /* MockPosts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MockPosts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		561B30DC2983FC24005A71B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		561B30E62983FC24005A71B2 /* MockPosts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MockPosts.xcdatamodel; sourceTree = "<group>"; };
@@ -141,6 +146,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5608C54D2AF6090100750FCE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5608C54E2AF6091700750FCE /* CommentHeaderView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		561B30D02983FC24005A71B2 = {
 			isa = PBXGroup;
 			children = (
@@ -166,6 +179,7 @@
 		561B30DB2983FC24005A71B2 /* MockPosts */ = {
 			isa = PBXGroup;
 			children = (
+				5608C54C2AF5FA8C00750FCE /* MockPosts.entitlements */,
 				561B310F298400AC005A71B2 /* Application */,
 				561B3110298400BB005A71B2 /* Infrastructure */,
 				561B3111298400CA005A71B2 /* Data */,
@@ -277,8 +291,8 @@
 		561B311A29854EAB005A71B2 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				56D4C22C2AF5944400F1C0C0 /* Detail */,
 				561B311B29854EBD005A71B2 /* Home */,
+				56D4C22C2AF5944400F1C0C0 /* Detail */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -452,6 +466,7 @@
 		561B315729880EA0005A71B2 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				5608C54D2AF6090100750FCE /* Views */,
 				561B315F298877AA005A71B2 /* Cells */,
 			);
 			path = UI;
@@ -461,6 +476,7 @@
 			isa = PBXGroup;
 			children = (
 				561B3160298877B3005A71B2 /* PostCell.swift */,
+				5608C5502AF60C3B00750FCE /* CommentCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -819,6 +835,7 @@
 				561B30E72983FC24005A71B2 /* MockPosts.xcdatamodeld in Sources */,
 				561B314C29859E47005A71B2 /* PostUseCaseProtocol.swift in Sources */,
 				561B313E298595B0005A71B2 /* PostResponse.swift in Sources */,
+				5608C54F2AF6091700750FCE /* CommentHeaderView.swift in Sources */,
 				561B313229856E8C005A71B2 /* APIRequest.swift in Sources */,
 				561B31542987F8C8005A71B2 /* PostEntity.swift in Sources */,
 				56D4C2362AF5A06D00F1C0C0 /* DetailView.swift in Sources */,
@@ -832,6 +849,7 @@
 				561B315C29886FAE005A71B2 /* UIView+Misc.swift in Sources */,
 				561B315E298876DC005A71B2 /* TableView+Misc.swift in Sources */,
 				561B313C29859485005A71B2 /* PostAPIService.swift in Sources */,
+				5608C5512AF60C3B00750FCE /* CommentCell.swift in Sources */,
 				561B315A29886E53005A71B2 /* HomeView.swift in Sources */,
 				561B31512985A0A7005A71B2 /* Rx+Misc.swift in Sources */,
 				56D4C2322AF594DA00F1C0C0 /* DetailViewModel.swift in Sources */,
@@ -1002,6 +1020,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MockPosts/MockPosts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K992HP865M;
@@ -1010,9 +1029,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1021,11 +1039,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ruyther.MockPosts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1035,6 +1053,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MockPosts/MockPosts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K992HP865M;
@@ -1043,9 +1062,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1054,11 +1072,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ruyther.MockPosts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -37,7 +37,6 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         customView.tableView.register(cellClass: PostCell.self)
-
         bindRx()
 
         viewModel.input.getPosts.accept(())
@@ -45,6 +44,9 @@ final class HomeViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
 
         if let selectedIndexPath = customView.tableView.indexPathForSelectedRow {
             customView.tableView.deselectRow(at: selectedIndexPath, animated: true)
@@ -75,7 +77,9 @@ extension HomeViewController {
             .observe(on: MainScheduler.asyncInstance)
             .bind { [weak self] isLoading in
                 if isLoading {
-                    self?.customView.activityIndicator.startAnimating()
+                    if !(self?.customView.refreshControl.isRefreshing ?? false) {
+                        self?.customView.activityIndicator.startAnimating()
+                    }
                 } else {
                     self?.customView.refreshControl.endRefreshing()
                     self?.customView.activityIndicator.stopAnimating()
