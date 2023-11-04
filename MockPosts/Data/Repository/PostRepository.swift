@@ -39,6 +39,7 @@ final class PostRepository: PostRepositoryProtocol {
 
     func getPostDetail(postId: String) -> Single<Result<PostEntity, NetworkError>> {
         return postAPIService.getPostDetail(postId: postId)
+            .delay(.seconds(5), scheduler: MainScheduler.instance)
             .map { [weak self] result in
                 guard let self else {
                     return .failure(NetworkError.genericError(error: "PostResponse map to PostEntity failed."))

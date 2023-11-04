@@ -13,8 +13,12 @@ final class PostCell: UITableViewCell {
 
     // MARK: - Private Properties
 
+    private let postImageView = UIImageView(translateMask: false).apply {
+        $0.backgroundColor = .red
+    }
+
     private let titleLabel = UILabel(translateMask: false).apply {
-        $0.font = UIFont.boldSystemFont(ofSize: 20)
+        $0.font = UIFont.preferredFont(forTextStyle: .headline)
         $0.tintColor = .black
         $0.textAlignment = .left
         $0.numberOfLines = 0
@@ -37,13 +41,20 @@ final class PostCell: UITableViewCell {
 
 extension PostCell: ViewCode {
     func buildViewHierarchy() {
+        contentView.addSubview(postImageView)
         contentView.addSubview(titleLabel)
     }
 
     func setupConstraints() {
         NSLayoutConstraint.activate([
+            postImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+            postImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            postImageView.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -15),
+            postImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
+            postImageView.widthAnchor.constraint(equalToConstant: 70),
+
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            titleLabel.leadingAnchor.constraint(equalTo: postImageView.trailingAnchor, constant: 15),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
             titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
 

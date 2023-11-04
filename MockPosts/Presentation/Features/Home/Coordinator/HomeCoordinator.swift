@@ -11,9 +11,17 @@ import XCoordinator
 enum HomeRouter: Route {
     case home
     case dismiss
+    case detail(String)
 }
 
 final class HomeCoordinator: NavigationCoordinator<HomeRouter> {
+
+    // MARK: - Private Properties
+
+    private lazy var service = ServiceAPICall()
+    private lazy var postService = PostAPIService(serviceAPI: service)
+    private lazy var postRepository = PostRepository(postAPIService: postService)
+    private lazy var postUseCase = PostUseCase(postRepository: postRepository)
 
     // MARK: - Initializer
 
@@ -26,12 +34,16 @@ final class HomeCoordinator: NavigationCoordinator<HomeRouter> {
     override func prepareTransition(for route: HomeRouter) -> NavigationTransition {
         switch route {
         case .home:
-            let service = ServiceAPICall()
-            let postService = PostAPIService(serviceAPI: service)
-            let postRepository = PostRepository(postAPIService: postService)
-            let postUseCase = PostUseCase(postRepository: postRepository)
             let viewModel = HomeViewModel(router: weakRouter, postUseCase: postUseCase)
             let viewController = HomeViewController(viewModel: viewModel)
+            return .push(viewController)
+        case let .detail(postId):
+            let viewModel = DetailViewModel(
+                router: weakRouter,
+                postUseCase: postUseCase,
+                postId: postId
+            )
+            let viewController = DetailViewController(viewModel: viewModel)
             return .push(viewController)
         case .dismiss:
             return .dismiss()

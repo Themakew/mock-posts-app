@@ -18,9 +18,12 @@ protocol HomeViewModelProtocol {
 
 protocol HomeViewModelInput {
     var getPosts: PublishRelay<Void> { get }
+    var postSelected: PublishRelay<PostEntity> { get }
 }
 
 protocol HomeViewModelOutput {
+    var title: Driver<String> { get }
+    var isLoading: BehaviorRelay<Bool> { get }
     var dataSource: BehaviorRelay<[PostEntity]?> { get }
 }
 
@@ -34,7 +37,10 @@ final class HomeViewModel: HomeViewModelProtocol, HomeViewModelInput, HomeViewMo
     // MARK: - Internal Properties
 
     var getPosts = PublishRelay<Void>()
-    var dataSource = BehaviorRelay<[PostEntity]?>(value: [])
+    var dataSource = BehaviorRelay<[PostEntity]?>(value: nil)
+    var title: Driver<String> = .just("Posts")
+    var postSelected = PublishRelay<PostEntity>()
+    var isLoading = BehaviorRelay<Bool>(value: false)
 
     // MARK: - Private Properties
 
@@ -58,10 +64,16 @@ final class HomeViewModel: HomeViewModelProtocol, HomeViewModelInput, HomeViewMo
 
     private func bindRx() {
         let responseResultObservable = getPosts
+            .do(onNext: { [weak self] _ in
+                self?.isLoading.accept(true)
+            })
             .flatMap(weak: self) { this, _ -> Observable<Result<[PostEntity], NetworkError>> in
                 return this.postUseCase.getPosts()
                     .asObservable()
             }
+            .do(onNext: { [weak self] _ in
+                self?.isLoading.accept(false)
+            })
             .share()
 
         responseResultObservable
@@ -70,10 +82,16 @@ final class HomeViewModel: HomeViewModelProtocol, HomeViewModelInput, HomeViewMo
                 switch result {
                 case let .success(response):
                     this.dataSource.accept(response)
-                    break
                 case let .failure(error):
                     break
                 }
+            })
+            .disposed(by: disposeBag)
+
+        postSelected
+            .withUnretained(self)
+            .subscribe(onNext: { this, post in
+                this.router.trigger(.detail(String(post.id)))
             })
             .disposed(by: disposeBag)
     }

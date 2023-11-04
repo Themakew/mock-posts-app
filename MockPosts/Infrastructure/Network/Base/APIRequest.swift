@@ -6,7 +6,6 @@
 //
 
 import Alamofire
-import Foundation
 
 enum BaseURL: String {
     case primary = "https://jsonplaceholder.typicode.com/"

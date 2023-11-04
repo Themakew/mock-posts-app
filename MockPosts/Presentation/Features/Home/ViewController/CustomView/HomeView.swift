@@ -11,9 +11,14 @@ final class HomeView: UIView {
 
     // MARK: - Internal Properties
 
-    lazy var tableView = UITableView(translateMask: false).apply {
+    let refreshControl = UIRefreshControl()
+    let tableView = UITableView(translateMask: false).apply {
         $0.rowHeight = UITableView.automaticDimension
         $0.estimatedRowHeight = 50
+    }
+
+    let activityIndicator = UIActivityIndicatorView(style: .large).apply {
+        $0.translatesAutoresizingMaskIntoConstraints = false
     }
 
     // MARK: - Lifecycle
@@ -34,6 +39,7 @@ final class HomeView: UIView {
 extension HomeView: ViewCode {
     func buildViewHierarchy() {
         addSubview(tableView)
+        addSubview(activityIndicator)
     }
 
     func setupConstraints() {
@@ -42,10 +48,15 @@ extension HomeView: ViewCode {
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
 
     func setupAdditionalConfiguration() {
         backgroundColor = .white
+
+        tableView.refreshControl = refreshControl
     }
 }

@@ -14,8 +14,7 @@ final class HomeViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
     private let viewModel: HomeViewModelProtocol
-
-    private lazy var customView = HomeView()
+    private let customView = HomeView()
 
     // MARK: - Initializers
 
@@ -43,6 +42,14 @@ final class HomeViewController: UIViewController {
 
         viewModel.input.getPosts.accept(())
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let selectedIndexPath = customView.tableView.indexPathForSelectedRow {
+            customView.tableView.deselectRow(at: selectedIndexPath, animated: true)
+        }
+    }
 }
 
 // MARK: - BindRx Extension
@@ -53,9 +60,32 @@ extension HomeViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
 
+        customView.refreshControl.rx.controlEvent(.valueChanged)
+            .bind { [weak self] in
+                self?.viewModel.input.getPosts.accept(())
+            }
+            .disposed(by: disposeBag)
+
+        viewModel.output.title
+            .drive(rx.title)
+            .disposed(by: disposeBag)
+
+        viewModel.output.isLoading
+            .asObservable()
+            .observe(on: MainScheduler.asyncInstance)
+            .bind { [weak self] isLoading in
+                if isLoading {
+                    self?.customView.activityIndicator.startAnimating()
+                } else {
+                    self?.customView.refreshControl.endRefreshing()
+                    self?.customView.activityIndicator.stopAnimating()
+                }
+            }
+            .disposed(by: disposeBag)
+
         viewModel.output.dataSource
             .filterNotNil()
-            .bind(to: customView.tableView.rx.items) { [weak self] tableView, row, dataSource in
+            .bind(to: customView.tableView.rx.items) { [weak self] _, row, dataSource in
                 let indexPath = IndexPath(row: row, section: 0)
 
                 guard let self else {
@@ -70,9 +100,7 @@ extension HomeViewController {
             .disposed(by: disposeBag)
 
         customView.tableView.rx.modelSelected(PostEntity.self)
-            .subscribe(onNext: { item in
-
-            })
+            .bind(to: viewModel.input.postSelected)
             .disposed(by: disposeBag)
     }
 }
@@ -81,6 +109,6 @@ extension HomeViewController {
 
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        return 130
     }
 }
