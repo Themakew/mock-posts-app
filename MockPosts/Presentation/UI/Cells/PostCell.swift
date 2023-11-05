@@ -5,6 +5,7 @@
 //  Created by Ruyther Costa on 30/01/23.
 //
 
+import Kingfisher
 import RxRelay
 import RxSwift
 import UIKit
@@ -13,10 +14,7 @@ final class PostCell: UITableViewCell {
 
     // MARK: - Private Properties
 
-    private let postImageView = UIImageView(translateMask: false).apply {
-        $0.backgroundColor = .red
-    }
-
+    private let postImageView = UIImageView(translateMask: false)
     private let titleLabel = UILabel(translateMask: false).apply {
         $0.font = UIFont.preferredFont(forTextStyle: .headline)
         $0.tintColor = .black
@@ -35,6 +33,17 @@ final class PostCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - View LifeCycle
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        postImageView.kf.cancelDownloadTask()
+
+        postImageView.image = UIImage(named: "placeholder-icon")
+        titleLabel.text = nil
+    }
+
 }
 
 // MARK: - ViewCode Extension
@@ -74,5 +83,6 @@ extension PostCell: Configurable {
 
     func configure(content: Configuration) {
         titleLabel.text = content.title
+        postImageView.setImageWithKingfisher(content.iconURL)
     }
 }

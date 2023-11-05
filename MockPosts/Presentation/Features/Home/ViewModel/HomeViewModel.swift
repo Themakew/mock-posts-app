@@ -63,7 +63,7 @@ final class HomeViewModel: HomeViewModelProtocol, HomeViewModelInput, HomeViewMo
     // MARK: - Private Methods
 
     private func bindRx() {
-        let responseResultObservable = getPosts
+        getPosts
             .do(onNext: { [weak self] _ in
                 self?.isLoading.accept(true)
             })
@@ -74,15 +74,16 @@ final class HomeViewModel: HomeViewModelProtocol, HomeViewModelInput, HomeViewMo
             .do(onNext: { [weak self] _ in
                 self?.isLoading.accept(false)
             })
-            .share()
-
-        responseResultObservable
             .withUnretained(self)
             .subscribe(onNext: { this, result in
                 switch result {
-                case let .success(response):
-                    this.dataSource.accept(response)
+                case let .success(posts):
+                    this.dataSource.accept(posts)
+                    posts.forEach { post in
+                        this.getPostIcon(for: String(post.id))
+                    }
                 case let .failure(error):
+                    // TODO: Handle error
                     break
                 }
             })
@@ -92,6 +93,25 @@ final class HomeViewModel: HomeViewModelProtocol, HomeViewModelInput, HomeViewMo
             .withUnretained(self)
             .subscribe(onNext: { this, post in
                 this.router.trigger(.detail(String(post.id)))
+            })
+            .disposed(by: disposeBag)
+    }
+
+    private func getPostIcon(for postId: String) {
+        postUseCase.getPostIcon(postId: postId)
+            .asObservable()
+            .subscribe(onNext: { [weak self] result in
+                switch result {
+                case let .success(icon):
+                    if let index = self?.dataSource.value?.firstIndex(where: { String($0.id) == postId }) {
+                        var updatedPosts = self?.dataSource.value
+                        updatedPosts?[index].iconURL = icon.iconURL
+                        self?.dataSource.accept(updatedPosts)
+                    }
+                case let .failure(error):
+                    // TODO: Handle error
+                    break
+                }
             })
             .disposed(by: disposeBag)
     }

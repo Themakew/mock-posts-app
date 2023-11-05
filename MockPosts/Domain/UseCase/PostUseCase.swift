@@ -32,4 +32,8 @@ final class PostUseCase: PostUseCaseProtocol {
     func getPostDetailComments(postId: String) -> Single<Result<[PostCommentsEntity], NetworkError>> {
         return postRepository.getPostDetailComments(postId: postId)
     }
+
+    func getPostIcon(postId: String) -> RxSwift.Single<Result<PhotoEntity, NetworkError>> {
+        return postRepository.getPostIcon(postId: postId)
+    }
 }

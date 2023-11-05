@@ -11,6 +11,7 @@ target 'MockPosts' do
   pod 'RxSwift', '6.5.0'
   pod 'RxCocoa', '6.5.0'
   pod 'XCoordinator', '~> 2.0'
+  pod 'Kingfisher', '~> 7.0'
 
   target 'MockPostsTests' do
     inherit! :search_paths

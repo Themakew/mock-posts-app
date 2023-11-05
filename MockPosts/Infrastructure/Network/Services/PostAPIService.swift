@@ -12,12 +12,14 @@ protocol PostAPIServiceProtocol {
     func getPosts() -> Single<Result<[PostResponse], NetworkError>>
     func getPostDetail(postId: String) -> Single<Result<PostResponse, NetworkError>>
     func getPostDetailComments(postId: String) -> Single<Result<[PostCommentsResponse], NetworkError>>
+    func getPhoto(postId: String) -> Single<Result<PhotoResponse, NetworkError>>
 }
 
 enum PostAPICall {
     case getPosts
     case getPostDetails(postId: String)
     case getPostDetailComments(postId: String)
+    case getPhoto(postId: String)
 
     var path: APIRequest {
         switch self {
@@ -27,6 +29,8 @@ enum PostAPICall {
             return APIRequest(method: .get, path: String(format: "posts/%@", postId))
         case let .getPostDetailComments(postId):
             return APIRequest(method: .get, path: String(format: "posts/%@/comments", postId))
+        case let .getPhoto(postId):
+            return APIRequest(method: .get, path: String(format: "photos/%@", postId))
         }
     }
 }
@@ -65,6 +69,14 @@ final class PostAPIService: PostAPIServiceProtocol {
         return serviceAPI.request(
             request: PostAPICall.getPostDetailComments(postId: postId).path,
             type: [PostCommentsResponse].self
+        )
+        .asSingle()
+    }
+
+    func getPhoto(postId: String) -> Single<Result<PhotoResponse, NetworkError>> {
+        return serviceAPI.request(
+            request: PostAPICall.getPhoto(postId: postId).path,
+            type: PhotoResponse.self
         )
         .asSingle()
     }

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		5608C54F2AF6091700750FCE /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5608C54E2AF6091700750FCE /* CommentHeaderView.swift */; };
 		5608C5512AF60C3B00750FCE /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5608C5502AF60C3B00750FCE /* CommentCell.swift */; };
+		5608C5552AF712AE00750FCE /* PhotoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5608C5542AF712AE00750FCE /* PhotoEntity.swift */; };
+		5608C5572AF712EC00750FCE /* PhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5608C5562AF712EC00750FCE /* PhotoResponse.swift */; };
+		5608C5592AF71B1F00750FCE /* UIImageView+Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5608C5582AF71B1F00750FCE /* UIImageView+Misc.swift */; };
 		561B30DD2983FC24005A71B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561B30DC2983FC24005A71B2 /* AppDelegate.swift */; };
 		561B30E72983FC24005A71B2 /* MockPosts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 561B30E52983FC24005A71B2 /* MockPosts.xcdatamodeld */; };
 		561B30E92983FC25005A71B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 561B30E82983FC25005A71B2 /* Assets.xcassets */; };
@@ -69,6 +72,9 @@
 		5608C54C2AF5FA8C00750FCE /* MockPosts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MockPosts.entitlements; sourceTree = "<group>"; };
 		5608C54E2AF6091700750FCE /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		5608C5502AF60C3B00750FCE /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		5608C5542AF712AE00750FCE /* PhotoEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEntity.swift; sourceTree = "<group>"; };
+		5608C5562AF712EC00750FCE /* PhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResponse.swift; sourceTree = "<group>"; };
+		5608C5582AF71B1F00750FCE /* UIImageView+Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Misc.swift"; sourceTree = "<group>"; };
 		561B30D92983FC24005A71B2 /* MockPosts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MockPosts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		561B30DC2983FC24005A71B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		561B30E62983FC24005A71B2 /* MockPosts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MockPosts.xcdatamodel; sourceTree = "<group>"; };
@@ -383,6 +389,7 @@
 			children = (
 				561B313D298595B0005A71B2 /* PostResponse.swift */,
 				561B313F298596FC005A71B2 /* PostCommentsResponse.swift */,
+				5608C5562AF712EC00750FCE /* PhotoResponse.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -450,6 +457,7 @@
 				561B31502985A0A7005A71B2 /* Rx+Misc.swift */,
 				561B315B29886FAD005A71B2 /* UIView+Misc.swift */,
 				561B315D298876DC005A71B2 /* TableView+Misc.swift */,
+				5608C5582AF71B1F00750FCE /* UIImageView+Misc.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -459,6 +467,7 @@
 			children = (
 				561B31532987F8C8005A71B2 /* PostEntity.swift */,
 				561B315529880A99005A71B2 /* PostCommentsEntity.swift */,
+				5608C5542AF712AE00750FCE /* PhotoEntity.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -841,6 +850,8 @@
 				56D4C2362AF5A06D00F1C0C0 /* DetailView.swift in Sources */,
 				561B312B2985502F005A71B2 /* Configurable.swift in Sources */,
 				561B3161298877B3005A71B2 /* PostCell.swift in Sources */,
+				5608C5552AF712AE00750FCE /* PhotoEntity.swift in Sources */,
+				5608C5592AF71B1F00750FCE /* UIImageView+Misc.swift in Sources */,
 				561B313529856F03005A71B2 /* NetworkError.swift in Sources */,
 				561B314829859C43005A71B2 /* PostRepository.swift in Sources */,
 				561B314E29859E50005A71B2 /* PostUseCase.swift in Sources */,
@@ -848,6 +859,7 @@
 				561B30DD2983FC24005A71B2 /* AppDelegate.swift in Sources */,
 				561B315C29886FAE005A71B2 /* UIView+Misc.swift in Sources */,
 				561B315E298876DC005A71B2 /* TableView+Misc.swift in Sources */,
+				5608C5572AF712EC00750FCE /* PhotoResponse.swift in Sources */,
 				561B313C29859485005A71B2 /* PostAPIService.swift in Sources */,
 				5608C5512AF60C3B00750FCE /* CommentCell.swift in Sources */,
 				561B315A29886E53005A71B2 /* HomeView.swift in Sources */,

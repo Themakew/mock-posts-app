@@ -71,12 +71,30 @@ final class PostRepository: PostRepositoryProtocol {
             }
     }
 
+    func getPostIcon(postId: String) -> Single<Result<PhotoEntity, NetworkError>> {
+        return postAPIService.getPhoto(postId: postId)
+            .map { [weak self] result in
+                guard let self else {
+                    return .failure(
+                        NetworkError.genericError(error: "[PhotoResponse] map to [PhotoEntity] failed.")
+                    )
+                }
+
+                switch result {
+                case let .success(list):
+                    return .success(self.getPhotoEntity(object: list))
+                case let .failure(error):
+                    return .failure(error)
+                }
+            }
+    }
+
     // MARK: - Private Methods
 
     private func getPostEntityList(list: [PostResponse]) -> [PostEntity] {
         let auxiliarList = list
         return auxiliarList.map { item in
-            PostEntity(userId: item.userId, id: item.id, title: item.title, body: item.body, isFavorite: false)
+            PostEntity(userId: item.userId, id: item.id, title: item.title, body: item.body, iconURL: "", isFavorite: false)
         }
     }
 
@@ -86,6 +104,7 @@ final class PostRepository: PostRepositoryProtocol {
             id: object.id,
             title: object.title,
             body: object.body,
+            iconURL: "",
             isFavorite: false
         )
     }
@@ -95,5 +114,9 @@ final class PostRepository: PostRepositoryProtocol {
         return auxiliarList.map { item in
             PostCommentsEntity(postId: item.postId, id: item.id, name: item.name, email: item.email, comment: item.body)
         }
+    }
+
+    private func getPhotoEntity(object: PhotoResponse) -> PhotoEntity {
+        return PhotoEntity(iconURL: object.thumbnailUrl, imageURL: object.url)
     }
 }
